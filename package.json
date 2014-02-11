@@ -1,0 +1,42 @@
+{
+  "name": "grunt-cache-control",
+  "description": "Break cache for your Javascript and CSS in one step with this easy to use plugin.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/Robert-W/grunt-cache-control",
+  "author": {
+    "name": "Robert Winterbottom",
+    "email": "robbie.winterbottom@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Robert-W/grunt-cache-control.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Robert-W/grunt-cache-control/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/Robert-W/grunt-cache-control/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "Gruntfile.js",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-clean": "~0.4.0",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt": "~0.4.1"
+  },
+  "peerDependencies": {
+    "grunt": "~0.4.1"
+  },
+  "keywords": [
+    "gruntplugin"
+  ]
+}
