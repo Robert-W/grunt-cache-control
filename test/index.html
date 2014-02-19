@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test</title>
+
+  <link href="test.css?v=1.1" rel="stylesheet" />
+  <link href="test1.css?v=1.4" rel="stylesheet" />
+  <link href="test2.css" rel="stylesheet" />
+  <link href="test3.css" rel="stylesheet" />
+  <link href="test4.css" rel="stylesheet" />
+
+  <script src="sample.js?v=1.4"></script>
+  <script src="sample1.js"></script>
+  <script src="sample2.js"></script>
+  <script src="sample3.js"></script>
+  <script src="sample4.js"></script>
+
+  <!-- For Dojo > 1.7 Users -->
+  <script>
+    var dojoConfig = {
+      parseOnLoad: false,
+      isDebug: false,
+      async: true,
+      cacheBust: true,
+      packages: [
+        {name: "utils", location: location.pathname.replace(/\/[^/]+$/, "") + "/app/utils"}
+      ]
+    };
+  </script>
+
+
+</head>
+<body>
+
+</body>
+</html>
