@@ -1,0 +1,268 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Grunt-cache-control by Robert-W</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Grunt-cache-control</h1>
+        <p class="header">Grunt plugin that will help developers control browser cache.</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/Robert-W/grunt-cache-control/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/Robert-W/grunt-cache-control/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/Robert-W/grunt-cache-control">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/Robert-W">Robert-W</a></p>
+
+
+      </header>
+      <section>
+        <h1>
+<a name="grunt-cache-control" class="anchor" href="#grunt-cache-control"><span class="octicon octicon-link"></span></a>grunt-cache-control</h1>
+
+<blockquote>
+<p>Break cache for your Javascript and CSS in one step with this easy to use plugin. When maintaining an application, often we need to update the code and when we do, one of our clients or customer's often complains they do not see the changes and we have to explain to them how to clear their cache.  This is not good.  By appending a ?v=1.0 or something similar to the end of all our script and link tags, we can trick the browser into thinking it's a new file and it will fetch a new version once and then continue caching until we provide a new version with ?v=1.1 or something different. This plugin automates that so you don't have to manually go through your html page and update all the references yourself. Here is an intersting link explaining the benefits and reasons you may want to do this. <a href="http://www.impressivewebs.com/force-browser-newest-stylesheet/" target="_blank"></a><a href="http://www.impressivewebs.com/force-browser-newest-stylesheet/">http://www.impressivewebs.com/force-browser-newest-stylesheet/</a></p>
+</blockquote>
+
+<h2>
+<a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting Started</h2>
+
+<p>This plugin requires Grunt <code>~0.4.1</code></p>
+
+<p>If you haven't used <a href="http://gruntjs.com/">Grunt</a> before, be sure to check out the <a href="http://gruntjs.com/getting-started">Getting Started</a> guide, as it explains how to create a <a href="http://gruntjs.com/sample-gruntfile">Gruntfile</a> as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:</p>
+
+<pre><code>npm install grunt-cache-control --save-dev
+</code></pre>
+
+<p>Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:</p>
+
+<pre><code>grunt.loadNpmTasks('grunt-cache-control');
+</code></pre>
+
+<h2>
+<a name="the-cache_control-task" class="anchor" href="#the-cache_control-task"><span class="octicon octicon-link"></span></a>The "cache_control" task</h2>
+
+<h3>
+<a name="overview" class="anchor" href="#overview"><span class="octicon octicon-link"></span></a>Overview</h3>
+
+<p>In your project's Gruntfile, add a section named <code>cache_control</code> to the data object passed into <code>grunt.initConfig()</code>.</p>
+
+<pre><code>cache_control: {
+  your_target: {
+    source: "test/index.html",
+    options: {
+      version: "2.0",
+      links: true,
+      scripts: true,
+      replace: false,
+      outputDest: "test/index2.html",
+      dojoCacheBust: true
+    }
+  }
+}
+</code></pre>
+
+<h2>
+<a name="options" class="anchor" href="#options"><span class="octicon octicon-link"></span></a>Options</h2>
+
+<h4>
+<a name="source" class="anchor" href="#source"><span class="octicon octicon-link"></span></a>source</h4>
+
+<p>Type: <code>String</code>
+Default Value: <code>none</code></p>
+
+<p>A path to a html file that you want the plugin to work with.  If you do not provide a valid filepath then the plugin will terminate with a fatal error telling you the source file was not found. If the file provided does not end in .html or .htm then it will terminate with an error stating the source file needs to end with .html or .htm.  If there is a need to work with other file types contact me and I will look into it. </p>
+
+<h4>
+<a name="optionsversion" class="anchor" href="#optionsversion"><span class="octicon octicon-link"></span></a>options.version</h4>
+
+<p>Type: <code>String</code>
+Default value: <code>'1.0'</code></p>
+
+<p>The version number that will appended to your files.</p>
+
+<h4>
+<a name="optionslinks" class="anchor" href="#optionslinks"><span class="octicon octicon-link"></span></a>options.links</h4>
+
+<p>Type: <code>bool</code>
+Default value: <code>true</code></p>
+
+<p>Tells the plugin to append the version number to all link tags with <code>rel="stylesheet"</code>.</p>
+
+<h4>
+<a name="optionsscripts" class="anchor" href="#optionsscripts"><span class="octicon octicon-link"></span></a>options.scripts</h4>
+
+<p>Type: <code>bool</code>
+Default value: <code>true</code></p>
+
+<p>Tells the plugin to append the version number to all script tags with a src attribute.</p>
+
+<h4>
+<a name="optionsreplace" class="anchor" href="#optionsreplace"><span class="octicon octicon-link"></span></a>options.replace</h4>
+
+<p>Type: <code>bool</code>
+Default value: <code>true</code></p>
+
+<p>Tells the plugin to override whichever file you provided as the source.</p>
+
+<h4>
+<a name="optionsoutputdest" class="anchor" href="#optionsoutputdest"><span class="octicon octicon-link"></span></a>options.outputDest</h4>
+
+<p>Type: <code>String</code>
+Default value: <code>none</code></p>
+
+<p>Mandatory if options.replace is set to false.  Otherwise this does not need to be specified. If options.replace is set to false, this is where the plugin will output the updated html page.  The file does not need to be created so specifying something like <code>test/index2.html</code> will create/overwrite index2.html in the test directory. </p>
+
+<h4>
+<a name="optionsdojocachebust" class="anchor" href="#optionsdojocachebust"><span class="octicon octicon-link"></span></a>options.dojoCacheBust</h4>
+
+<p>Type: <code>bool</code>
+Default value: <code>false</code></p>
+
+<p>If you are using dojo and have djConfig or dojoConfig object set up using <code>cacheBust: true</code>, this will replace the true with the version number.  Setting cacheBust to true appends a unix timestamp to the end of every module you are requiring via dojo which means the browser will never cache your module as it always looks different.  This is great for development but in production you want the browser to cache unless there is new code.  Setting this to true, as mentioned, tells dojo to append a version number to the modules instead of a timestamp so when the version number changes, the browser will grab all the latest changes but it will cache after that giving you the benefit of caching without having to explain to your clients how to clear their cache to get the latest version. </p>
+
+<h2>
+<a name="usage-examples" class="anchor" href="#usage-examples"><span class="octicon octicon-link"></span></a>Usage Examples</h2>
+
+<h4>
+<a name="options-1" class="anchor" href="#options-1"><span class="octicon octicon-link"></span></a>Options</h4>
+
+<p>In this example, I am appending the version number "2.0" to all script tags, link tags, and to my dojoConfig object setup in a script tag.  I am also telling it not to override the source file but instead write a new one out to <code>test/index2.html</code></p>
+
+<pre><code>grunt.initConfig({
+  cache_control: {
+    your_target: {
+      source: "test/index.html",
+      options: {
+        version: "2.0",
+        links: true,
+        scripts: true,
+        replace: false,
+        outputDest: "test/index2.html",
+        dojoCacheBust: true
+      }
+    }
+  }
+});
+</code></pre>
+
+<h5>
+<a name="here-is-what-a-sample-source-file-looks-like" class="anchor" href="#here-is-what-a-sample-source-file-looks-like"><span class="octicon octicon-link"></span></a>Here is what a sample source file looks like.</h5>
+
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;Test&lt;/title&gt;
+
+  &lt;link href="test.css?v=1.1" rel="stylesheet" /&gt;
+  &lt;link href="test1.css?v=1.4" rel="stylesheet" /&gt;
+  &lt;link href="test2.css" rel="stylesheet" /&gt;
+  &lt;link href="test3.css" rel="stylesheet" /&gt;
+  &lt;link href="test4.css" rel="stylesheet" /&gt;
+
+  &lt;script src="sample.js?v=1.4"&gt;&lt;/script&gt;
+  &lt;script src="sample1.js"&gt;&lt;/script&gt;
+  &lt;script src="sample2.js"&gt;&lt;/script&gt;
+  &lt;script src="sample3.js"&gt;&lt;/script&gt;
+  &lt;script src="sample4.js"&gt;&lt;/script&gt;
+
+  &lt;script&gt;
+    var dojoConfig = {
+      parseOnLoad: false,
+      isDebug: false,
+      async: true,
+      cacheBust: true,
+      packages: [
+        {name: "utils", location: location.pathname.replace(/\/[^/]+$/, "") + "/app/utils"}
+      ]
+    };
+  &lt;/script&gt;
+
+
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;script src="anotherSample3.js"&gt;&lt;/script&gt;
+  &lt;script src="anotherSample4.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<h5>
+<a name="here-is-what-the-output-file-looks-like" class="anchor" href="#here-is-what-the-output-file-looks-like"><span class="octicon octicon-link"></span></a>Here is what the output file looks like.</h5>
+
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;Test&lt;/title&gt;
+
+  &lt;link href="test.css?v=2.0" rel="stylesheet" /&gt;
+  &lt;link href="test1.css?v=2.0" rel="stylesheet" /&gt;
+  &lt;link href="test2.css?v=2.0" rel="stylesheet" /&gt;
+  &lt;link href="test3.css?v=2.0" rel="stylesheet" /&gt;
+  &lt;link href="test4.css?v=2.0" rel="stylesheet" /&gt;
+
+  &lt;script src="sample.js?v=2.0"&gt;&lt;/script&gt;
+  &lt;script src="sample1.js?v=2.0"&gt;&lt;/script&gt;
+  &lt;script src="sample2.js?v=2.0"&gt;&lt;/script&gt;
+  &lt;script src="sample3.js?v=2.0"&gt;&lt;/script&gt;
+  &lt;script src="sample4.js?v=2.0"&gt;&lt;/script&gt;
+
+  &lt;script&gt;
+    var dojoConfig = {
+      parseOnLoad: false,
+      isDebug: false,
+      async: true,
+      cacheBust: "v=2.0",
+      packages: [
+        {name: "utils", location: location.pathname.replace(/\/[^/]+$/, "") + "/app/utils"}
+      ]
+    };
+  &lt;/script&gt;
+
+
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;script src="anotherSample3.js?v=2.0"&gt;&lt;/script&gt;
+  &lt;script src="anotherSample4.js?v=2.0"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<h2>
+<a name="important-note" class="anchor" href="#important-note"><span class="octicon octicon-link"></span></a>Important Note</h2>
+
+<p>If you are unsure how this will work in your project.  I recommend for the first time you test on your source file that you set replace to false and give a outputDest to write the results to. This way if it does something you were not expecting then you will still have a copy of your original html file. If everything seems to work well and you want to replace your original file then go ahead and set replace to true.  <b>Just remember, replace by default is true so unless you set it to false, even if you do not specify it at all, it will overwrite your previous file.</b></p>
+
+<h2>
+<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+<p>In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using <a href="http://gruntjs.com/">Grunt</a>.</p>
+
+<h2>
+<a name="release-history" class="anchor" href="#release-history"><span class="octicon octicon-link"></span></a>Release History</h2>
+
+<p><em>Coming Soon</em></p>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="http://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
+</html>
