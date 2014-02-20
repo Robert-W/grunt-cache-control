@@ -37,7 +37,7 @@ module.exports = function(grunt) {
           links: true,
           scripts: true,
           replace: false,
-          replaceDest: "test/index2.html",
+          outputDest: "test/index2.html",
           dojoCacheBust: true
         }
       }

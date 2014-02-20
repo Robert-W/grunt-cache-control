@@ -118,10 +118,17 @@ module.exports = function(grunt) {
 
     src = this.data.source;
 
-    if (!grunt.file.exists(src)) {
+    // Make sure the file exists
+    if (!grunt.file.isFile(src)) {
       grunt.fatal('Source file "' + src + '" not found.');
     }
 
+    // Make sure the path is for a html or htm file
+    if (src.slice(src.length - 5) !== ".html" && src.slice(src.length - 4) !== ".htm") {
+      grunt.fatal('Source file "' + src + '" needs to end with .html or .htm');
+    }
+
+    // Get the page
     page = getIndexFile(src);
 
     if (options.links) {
@@ -147,11 +154,11 @@ module.exports = function(grunt) {
       grunt.file.write(src, page);
       grunt.log.ok("File successfully updated.");
     } else {
-      if (options.replaceDest) {
-        grunt.file.write(options.replaceDest, page);
-        grunt.log.ok("File successfully written to " + options.replaceDest + ".");
+      if (options.outputDest) {
+        grunt.file.write(options.outputDest, page);
+        grunt.log.ok("File successfully written to " + options.outputDest + ".");
       } else {
-        grunt.fatal("Unable to write file. Destination needs to be provided via replaceDest in options or replace set to true.");
+        grunt.fatal("Unable to write file. Destination needs to be provided via outputDest in options or replace set to true.");
       }
     }
 

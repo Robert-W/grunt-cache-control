@@ -1,6 +1,6 @@
 # grunt-cache-control
 
-> Break cache for your Javascript and CSS in one step with this easy to use plugin.
+> Break cache for your Javascript and CSS in one step with this easy to use plugin. When maintaining an application, often we need to update the code and when we do, one of our clients or customer's often complains they do not see the changes and we have to explain to them how to clear their cache.  This is not good.  By appending a ?v=1.0 or something similar to the end of all our script and link tags, we can trick the browser into thinking it's a new file and it will fetch a new version once and then continue caching until we provide a new version with ?v=1.1 or something different. This plugin automates that so you don't have to manually go through your html page and update all the references yourself. Here is an intersting link explaining the benefits and reasons you may want to do this. <a href='http://www.impressivewebs.com/force-browser-newest-stylesheet/' target='_blank'>http://www.impressivewebs.com/force-browser-newest-stylesheet/</a>
 
 ## Getting Started
 This plugin requires Grunt `~0.4.1`
@@ -31,29 +31,63 @@ cache_control: {
       links: true,
       scripts: true,
       replace: false,
-      replaceDest: "test/index2.html",
+      outputDest: "test/index2.html",
       dojoCacheBust: true
     }
   }
 }
 ```
 
-### Options
+## Options
 
-#### Options will be coming soon, ignore options.separator, I left in for my reference and will remove it when I have time to update README
-
-#### options.separator
+#### source
 Type: `String`
-Default value: `',  '`
+Default Value: `none`
 
-A string value that is used to do something with whatever.
+A path to a html file that you want the plugin to work with.  If you do not provide a valid filepath then the plugin will terminate with a fatal error telling you the source file was not found. If the file provided does not end in .html or .htm then it will terminate with an error stating the source file needs to end with .html or .htm.  If there is a need to work with other file types contact me and I will look into it. 
+
+#### options.version
+Type: `String`
+Default value: `'1.0'`
+
+The version number that will appended to your files.
+
+#### options.links
+Type: `bool`
+Default value: `true`
+
+Tells the plugin to append the version number to all link tags with `rel="stylesheet"`.
+
+#### options.scripts
+Type: `bool`
+Default value: `true`
+
+Tells the plugin to append the version number to all script tags with a src attribute.
+
+#### options.replace
+Type: `bool`
+Default value: `true`
+
+Tells the plugin to override whichever file you provided as the source.
+
+#### options.outputDest
+Type: `String`
+Default value: `none`
+
+Mandatory if options.replace is set to false.  Otherwise this does not need to be specified. If options.replace is set to false, this is where the plugin will output the updated html page.  The file does not need to be created so specifying something like `test/index2.html` will create/overwrite index2.html in the test directory. 
+
+#### options.dojoCacheBust
+Type: `bool`
+Default value: `false`
+
+If you are using dojo and have djConfig or dojoConfig object set up using `cacheBust: true`, this will replace the true with the version number.  Setting cacheBust to true appends a unix timestamp to the end of every module you are requiring via dojo which means the browser will never cache your module as it always looks different.  This is great for development but in production you want the browser to cache unless there is new code.  Setting this to true, as mentioned, tells dojo to append a version number to the modules instead of a timestamp so when the version number changes, the browser will grab all the latest changes but it will cache after that giving you the benefit of caching without having to explain to your clients how to clear their cache to get the latest version. 
 
 
+## Usage Examples
 
-### Usage Examples
+#### Options 
 
-#### Options (REFERENCE ONLY - Will be removed when I have time to update README)
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
+In this example, I am appending the version number "2.0" to all script tags, link tags, and to my dojoConfig object setup in a script tag.  I am also telling it not to override the source file but instead write a new one out to `test/index2.html`
 
 ```
 grunt.initConfig({
@@ -65,13 +99,97 @@ grunt.initConfig({
         links: true,
         scripts: true,
         replace: false,
-        replaceDest: "test/index2.html",
+        outputDest: "test/index2.html",
         dojoCacheBust: true
       }
     }
   }
-})
+});
 ```
+
+##### Here is what a sample source file looks like.
+```
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test</title>
+
+  <link href="test.css?v=1.1" rel="stylesheet" />
+  <link href="test1.css?v=1.4" rel="stylesheet" />
+  <link href="test2.css" rel="stylesheet" />
+  <link href="test3.css" rel="stylesheet" />
+  <link href="test4.css" rel="stylesheet" />
+
+  <script src="sample.js?v=1.4"></script>
+  <script src="sample1.js"></script>
+  <script src="sample2.js"></script>
+  <script src="sample3.js"></script>
+  <script src="sample4.js"></script>
+
+  <script>
+    var dojoConfig = {
+      parseOnLoad: false,
+      isDebug: false,
+      async: true,
+      cacheBust: true,
+      packages: [
+        {name: "utils", location: location.pathname.replace(/\/[^/]+$/, "") + "/app/utils"}
+      ]
+    };
+  </script>
+
+
+</head>
+<body>
+
+  <script src="anotherSample3.js"></script>
+  <script src="anotherSample4.js"></script>
+</body>
+</html>
+```
+##### Here is what the output file looks like.
+```
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test</title>
+
+  <link href="test.css?v=2.0" rel="stylesheet" />
+  <link href="test1.css?v=2.0" rel="stylesheet" />
+  <link href="test2.css?v=2.0" rel="stylesheet" />
+  <link href="test3.css?v=2.0" rel="stylesheet" />
+  <link href="test4.css?v=2.0" rel="stylesheet" />
+
+  <script src="sample.js?v=2.0"></script>
+  <script src="sample1.js?v=2.0"></script>
+  <script src="sample2.js?v=2.0"></script>
+  <script src="sample3.js?v=2.0"></script>
+  <script src="sample4.js?v=2.0"></script>
+
+  <script>
+    var dojoConfig = {
+      parseOnLoad: false,
+      isDebug: false,
+      async: true,
+      cacheBust: "v=2.0",
+      packages: [
+        {name: "utils", location: location.pathname.replace(/\/[^/]+$/, "") + "/app/utils"}
+      ]
+    };
+  </script>
+
+
+</head>
+<body>
+
+  <script src="anotherSample3.js?v=2.0"></script>
+  <script src="anotherSample4.js?v=2.0"></script>
+</body>
+</html>
+```
+
+## Important Note
+If you are unsure how this will work in your project.  I recommend for the first time you test on your source file that you set replace to false and give a outputDest to write the results to. This way if it does something you were not expecting then you will still have a copy of your original html file. If everything seems to work well and you want to replace your original file then go ahead and set replace to true.  <b>Just remember, replace by default is true so unless you set it to false, even if you do not specify it at all, it will overwrite your previous file.</b>
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
