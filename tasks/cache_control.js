@@ -41,6 +41,7 @@ module.exports = function(grunt) {
     dojoConfigWin,
     numScripts,
     numLinks,
+    partial,
     done,
     page,
     src;
@@ -49,12 +50,29 @@ module.exports = function(grunt) {
     return grunt.file.read(src);
   };
 
+  // html content, ignoreHttp currently always true, ignore src if begins with http or //
   var modifyLinks = function (html) {
     var count = 0;
     page = html.replace(/<link(.*?)\/>/g,function (match) {
       if (match.indexOf("stylesheet") > -1) {
         return match.replace(/href="([^"]*")/, function (ref) {
-          count++;
+          // Ignore CDN References
+          if (options.ignoreCDN) {
+            // remove src= from the match so all that is left is the quotes and string
+            partial = src.slice(4);
+            if (partial.slice(1,3) === "//" || partial.slice(1,5) === "http"){
+              return src;
+            }
+          }
+          // Grab files from Ignore List
+          if (options.filesToIgnore.length > 0) {
+            partial = src.slice(5, src.length - 1);
+            if (options.filesToIgnore.indexOf(partial) > -1) {
+              return src;
+            }
+          }
+
+          count++; // Track how many files are changed
           if (ref.indexOf("?v=") > -1) {
             return ref.replace(/v=(.*)/,'v=' + options.version + '"');
           } else {
@@ -68,12 +86,29 @@ module.exports = function(grunt) {
     return count;
   };
 
+  // html content, ignoreHttp currently always true, ignore src if begins with http or //
   var modifyScripts = function (html) {
     var count = 0;
     page = html.replace(/<script[^>]*>(.*?)<\/script>/g,function (match) {
       if (match.indexOf("src") > -1) {
         return match.replace(/src="([^"]*")/, function (src) {
-          count++;
+          // Ignore CDN References
+          if (options.ignoreCDN) {
+            // remove src= from the match so all that is left is the quotes and string
+            partial = src.slice(4);
+            if (partial.slice(1,3) === "//" || partial.slice(1,5) === "http"){
+              return src;
+            }
+          }
+          // Grab files from Ignore List
+          if (options.filesToIgnore.length > 0) {
+            partial = src.slice(5, src.length - 1);
+            if (options.filesToIgnore.indexOf(partial) > -1) {
+              return src;
+            }
+          }
+
+          count++; // Track how many files are changed
           if (src.indexOf("?v=") > -1) {
             return src.replace(/v=(.*)/,'v=' + options.version + '"');
           } else {
@@ -110,6 +145,8 @@ module.exports = function(grunt) {
       links: false,
       scripts: false,
       replace: true,
+      ignoreCDN: true,
+      filesToIgnore: [],
       dojoCacheBust: false
     });
 

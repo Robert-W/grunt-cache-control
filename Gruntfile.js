@@ -37,6 +37,8 @@ module.exports = function(grunt) {
           links: true,
           scripts: true,
           replace: false,
+          ignoreCDN: true,
+          filesToIgnore: ["test/testIgnore.js"],
           outputDest: "test/index2.html",
           dojoCacheBust: true
         }

@@ -1,6 +1,6 @@
 # grunt-cache-control
 
-> Break cache for your Javascript and CSS in one step with this easy to use plugin. When maintaining an application, often we need to update the code and when we do, one of our clients or customer's often complains they do not see the changes and we have to explain to them how to clear their cache.  This is not good.  By appending a ?v=1.0 or something similar to the end of all our script and link tags, we can trick the browser into thinking it's a new file and it will fetch a new version once and then continue caching until we provide a new version with ?v=1.1 or something different. This plugin automates that so you don't have to manually go through your html page and update all the references yourself. Here is an intersting link explaining the benefits and reasons you may want to do this. <a href='http://www.impressivewebs.com/force-browser-newest-stylesheet/' target='_blank'>http://www.impressivewebs.com/force-browser-newest-stylesheet/</a>
+> Control cache for your Javascript and CSS in one step with this easy to use plugin. When maintaining an application, often we need to update the code and when we do, one of our clients or customer's often complains they do not see the changes and we have to explain to them how to clear their cache.  This is not good.  By appending a ?v=1.0 or something similar to the end of all our script and link tags, we can trick the browser into thinking it's a new file and it will fetch a new version once and then continue caching until we provide a new version with ?v=1.1 or something different. This plugin automates that so you don't have to manually go through your html page and update all the references yourself. Here is an intersting link explaining the benefits and reasons you may want to do this. <a href='http://www.impressivewebs.com/force-browser-newest-stylesheet/' target='_blank'>http://www.impressivewebs.com/force-browser-newest-stylesheet/</a>
 
 ## Getting Started
 This plugin requires Grunt `~0.4.1`
@@ -70,6 +70,21 @@ Default value: `true`
 
 Tells the plugin to override whichever file you provided as the source.
 
+#### options.ignoreCDN
+Type: `bool`
+Default value: `true`
+
+Tells the plugin to not append a version number to files that start with http, https, or //.  So for example, the following would be ignored.<br>
+`http://js.arcgis.com/3.8/`<br>
+`https://js.arcgis.com/3.8/`<br>
+`//js.arcgis.com/3.8/`
+
+#### options.fileToIgnore
+Type: `array`
+Default value: `[]`
+
+Array of string filenames that you would like the version number to <b>not</b> be appended to.
+
 #### options.outputDest
 Type: `String`
 Default value: `none`
@@ -87,7 +102,7 @@ If you are using dojo and have djConfig or dojoConfig object set up using `cache
 
 #### Options 
 
-In this example, I am appending the version number "2.0" to all script tags, link tags, and to my dojoConfig object setup in a script tag.  I am also telling it not to override the source file but instead write a new one out to `test/index2.html`
+In this example, I am appending the version number "2.0" to all script tags, link tags, and to my dojoConfig object setup in a script tag.  I am also telling it not to override the source file but instead write a new one out to `test/index2.html`.  Some other settings are the ignoreCDN is true, which will ignore script and link tags starting with http, https, or //.  I also have a file in my filesToIgnore property so it will not append a verison number to `test/testIgnore.js`.
 
 ```
 grunt.initConfig({
@@ -99,6 +114,8 @@ grunt.initConfig({
         links: true,
         scripts: true,
         replace: false,
+        ignoreCDN: true,
+        filesToIgnore: ["test/testIgnore.js"],
         outputDest: "test/index2.html",
         dojoCacheBust: true
       }
@@ -137,6 +154,14 @@ grunt.initConfig({
       ]
     };
   </script>
+
+  <!-- This file should be ignored as it is in the ignore list -->
+  <script src="test/testIgnore.js"></script>
+
+  <script src="http://js.arcgis.com/3.8/"></script>
+
+  <!-- This syntax will match the protocol being used so it works with http ot https -->
+  <script src="//js.arcgis.com/3.8/"></script>
 
 
 </head>
@@ -177,6 +202,14 @@ grunt.initConfig({
       ]
     };
   </script>
+
+  <!-- This file should be ignored as it is in the ignore list -->
+  <script src="test/testIgnore.js"></script>
+
+  <script src="http://js.arcgis.com/3.8/"></script>
+
+  <!-- This syntax will match the protocol being used so it works with http ot https -->
+  <script src="//js.arcgis.com/3.8/"></script>
 
 
 </head>
