@@ -160,10 +160,11 @@ module.exports = function(grunt) {
       grunt.fatal('Source file "' + src + '" not found.');
     }
 
+    // What about .aspx/.php etc?
     // Make sure the path is for a html or htm file
-    if (src.slice(src.length - 5) !== ".html" && src.slice(src.length - 4) !== ".htm") {
-      grunt.fatal('Source file "' + src + '" needs to end with .html or .htm');
-    }
+    //if (src.slice(src.length - 5) !== ".html" && src.slice(src.length - 4) !== ".htm") {
+    //  grunt.fatal('Source file "' + src + '" needs to end with .html or .htm');
+    //}
 
     // Get the page
     page = getIndexFile(src);
