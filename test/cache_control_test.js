@@ -86,5 +86,16 @@ exports.cache_control = {
             );
             test.done();
         });
+    },
+    files_matching_ignorePatterns_are_left_unprocessed: function (test) {
+        test.expect(1);
+        runGruntTask('files-matching-ignorePatterns-are-left-unprocessed', function () {
+            test.strictEqual(
+                grunt.file.read('test/tmp/default2.html'),
+                grunt.file.read('test/expected/default2.html'),
+                "files matching any of the patterns defined under ignorePatterns are unprocessed"
+            );
+            test.done();
+        });
     }
 };

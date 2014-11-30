@@ -79,7 +79,7 @@ Tells the plugin to not append a version number to files that start with http, h
 `https://js.arcgis.com/3.8/`<br>
 `//js.arcgis.com/3.8/`
 
-#### options.fileToIgnore
+#### options.filesToIgnore
 Type: `array`
 Default value: `[]`
 
@@ -95,7 +95,25 @@ Mandatory if options.replace is set to false.  Otherwise this does not need to b
 Type: `bool`
 Default value: `false`
 
-If you are using dojo and have djConfig or dojoConfig object set up using `cacheBust: true`, this will replace the true with the version number.  Setting cacheBust to true appends a unix timestamp to the end of every module you are requiring via dojo which means the browser will never cache your module as it always looks different.  This is great for development but in production you want the browser to cache unless there is new code.  Setting this to true, as mentioned, tells dojo to append a version number to the modules instead of a timestamp so when the version number changes, the browser will grab all the latest changes but it will cache after that giving you the benefit of caching without having to explain to your clients how to clear their cache to get the latest version. 
+If you are using dojo and have djConfig or dojoConfig object set up using `cacheBust: true`, this will replace the true with the version number.  Setting cacheBust to true appends a unix timestamp to the end of every module you are requiring via dojo which means the browser will never cache your module as it always looks different.  This is great for development but in production you want the browser to cache unless there is new code.  Setting this to true, as mentioned, tells dojo to append a version number to the modules instead of a timestamp so when the version number changes, the browser will grab all the latest changes but it will cache after that giving you the benefit of caching without having to explain to your clients how to clear their cache to get the latest version.
+
+#### options.ignorePatterns
+Type: `array`
+Default value: `[]`
+
+You can either ignore files explicitly with options.filesToIgnore or with one or more regular expression patterns.
+for example:
+```
+cache_control: {
+    case1: {
+        source: 'index.html',
+        options: {
+            //ignore all js files located in vendor
+            ignorePatterns: [/^vendor\/[\w\/]+\.js$/]
+        }
+    }
+}
+```
 
 
 ## Usage Examples
