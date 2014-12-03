@@ -53,22 +53,22 @@ module.exports = function(grunt) {
   // html content, ignoreHttp currently always true, ignore src if begins with http or //
   var modifyLinks = function (html) {
     var count = 0;
-    page = html.replace(/<link(.*?)\/>/g,function (match) {
+    page = html.replace(/<link(.*?)\/?>/g,function (match) {
       if (match.indexOf("stylesheet") > -1) {
         return match.replace(/href="([^"]*")/, function (ref) {
           // Ignore CDN References
           if (options.ignoreCDN) {
             // remove src= from the match so all that is left is the quotes and string
-            partial = src.slice(4);
+            partial = ref.slice(4);
             if (partial.slice(1,3) === "//" || partial.slice(1,5) === "http"){
-              return src;
+              return ref;
             }
           }
           // Grab files from Ignore List
           if (options.filesToIgnore.length > 0) {
-            partial = src.slice(5, src.length - 1);
+            partial = ref.slice(5, ref.length - 1);
             if (options.filesToIgnore.indexOf(partial) > -1) {
-              return src;
+              return ref;
             }
           }
 
