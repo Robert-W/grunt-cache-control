@@ -3,24 +3,20 @@
 <head>
   <title>Test</title>
 
-  <link href="test.css?v=2.0" rel="stylesheet" />
-  <link href="test1.css?v=2.0" rel="stylesheet" />
-  <link href="test2.css?v=2.0" rel="stylesheet" />
-  <link href="test3.css?v=2.0" rel="stylesheet" />
-  <link href="test4.css?v=2.0" rel="stylesheet" />
+  <link href="test.css" rel="stylesheet" />
+  <link href="src/assets/css/test1.css" rel="stylesheet" />
+  <link href="test2.css" rel="stylesheet" />
 
-  <script src="sample.js?v=2.0"></script>
-  <script src="sample1.js?v=2.0"></script>
-  <script src="sample2.js?v=2.0"></script>
-  <script src="sample3.js?v=2.0"></script>
-  <script src="sample4.js?v=2.0"></script>
+  <script src="sample.js"></script>
+  <script src="src/js/sample1.js"></script>
+  <script src="sample2.js"></script>
 
   <script>
     var dojoConfig = {
       parseOnLoad: false,
       isDebug: false,
       async: true,
-      cacheBust: "v=2.0",
+      cacheBust: true,
       packages: [
         {name: "utils", location: location.pathname.replace(/\/[^/]+$/, "") + "/app/utils"}
       ]
@@ -39,7 +35,7 @@
 </head>
 <body>
 
-  <script src="anotherSample3.js?v=2.0"></script>
-  <script src="anotherSample4.js?v=2.0"></script>
+  <script src="anotherSample3.js"></script>
+  <script src="anotherSample4.js"></script>
 </body>
 </html>

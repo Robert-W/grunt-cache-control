@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test</title>
+
+  <link href="test.css?v=3.5.1" rel="stylesheet" />
+  <link href="src/assets/css/test1.css?v=3.5.1" rel="stylesheet" />
+  <link href="test2.css?v=3.5.1" rel="stylesheet" />
+
+  <script src="sample.js?v=3.5.1"></script>
+  <script src="src/js/sample1.js?v=3.5.1"></script>
+  <script src="sample2.js?v=3.5.1"></script>
+
+  <script>
+    var dojoConfig = {
+      parseOnLoad: false,
+      isDebug: false,
+      async: true,
+      cacheBust: true,
+      packages: [
+        {name: "utils", location: location.pathname.replace(/\/[^/]+$/, "") + "/app/utils"}
+      ]
+    };
+  </script>
+
+  <!-- This file should be ignored as it is in the ignore list -->
+  <script src="test/testIgnore.js"></script>
+
+  <script src="http://js.arcgis.com/3.8/"></script>
+
+  <!-- This syntax will match the protocol being used so it works with http ot https -->
+  <script src="//js.arcgis.com/3.8/"></script>
+
+
+</head>
+<body>
+
+  <script src="anotherSample3.js?v=3.5.1"></script>
+  <script src="anotherSample4.js?v=3.5.1"></script>
+</body>
+</html>

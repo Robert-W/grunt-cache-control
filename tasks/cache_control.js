@@ -49,7 +49,15 @@ module.exports = function(grunt) {
   var getIndexFile = function (src) {
     return grunt.file.read(src);
   };
-
+  //returns true if src or href matches any of the patterns defined with options.ignorePatterns
+  var shouldIgnorePattern = function (scriptOrLink) {
+    for(var p= 0, len = options.ignorePatterns.length; p < len; p++){
+      if(options.ignorePatterns[p].test(scriptOrLink)){
+        return true;
+      }
+    }
+    return false;
+  }
   // html content, ignoreHttp currently always true, ignore src if begins with http or //
   var modifyLinks = function (html) {
     var count = 0;
@@ -71,7 +79,9 @@ module.exports = function(grunt) {
               return ref;
             }
           }
-
+          if(shouldIgnorePattern(ref.slice(6, ref.length - 1))){
+            return ref;
+          }
           count++; // Track how many files are changed
           if (ref.indexOf("?v=") > -1) {
             return ref.replace(/v=(.*)/,'v=' + options.version + '"');
@@ -100,14 +110,16 @@ module.exports = function(grunt) {
               return src;
             }
           }
+          var scriptSrc = src.slice(5, src.length - 1);
           // Grab files from Ignore List
           if (options.filesToIgnore.length > 0) {
-            partial = src.slice(5, src.length - 1);
-            if (options.filesToIgnore.indexOf(partial) > -1) {
+            if (options.filesToIgnore.indexOf(scriptSrc) > -1) {
               return src;
             }
           }
-
+          if(shouldIgnorePattern(scriptSrc)){
+            return src;
+          }
           count++; // Track how many files are changed
           if (src.indexOf("?v=") > -1) {
             return src.replace(/v=(.*)/,'v=' + options.version + '"');
@@ -139,15 +151,18 @@ module.exports = function(grunt) {
 
 
   grunt.registerMultiTask('cache_control', 'Append versions to your files to control cache easily.', function() {
-    // Merge task-specific and/or target-specific options with these defaults.
+    // sync default parameters with the documentation at https://www.npmjs.org/package/grunt-cache-control
     options = this.options({
       version: "1.0",
-      links: false,
-      scripts: false,
+      links: true,
+      scripts: true,
       replace: true,
       ignoreCDN: true,
+      //TODO: update online documentation with filesToIgnore instead fileToIgnore
       filesToIgnore: [],
-      dojoCacheBust: false
+      dojoCacheBust: false,
+      //new option
+      ignorePatterns: []
     });
 
     // Tell Grunt not to finish until my async methods are completed, calling done() to finish
