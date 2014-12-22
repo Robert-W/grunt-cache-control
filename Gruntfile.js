@@ -31,7 +31,7 @@ module.exports = function(grunt) {
     // Configuration to be run (and then tested).
     cache_control: {
       default: {
-        source: "test/index.html",
+        source: "test/fixtures/default.html",
         options: {
           version: "2.0",
           links: true,
@@ -39,7 +39,7 @@ module.exports = function(grunt) {
           replace: false,
           ignoreCDN: true,
           filesToIgnore: ["test/testIgnore.js"],
-          outputDest: "test/index2.html",
+          outputDest: "test/fixtures/default2.html",
           dojoCacheBust: true
         }
       }

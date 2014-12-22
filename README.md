@@ -244,3 +244,11 @@ If you are unsure how this will work in your project.  I recommend for the first
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
+
+## Release History
+<ul>
+<li>2014/12/22 - v 0.2.4  Fixed issue with link tags being ignored that ended like <code> &lt;link ... ></code> instead of <code>&lt;link ... /></code>.  Both endings for link tags are now supported.  Also merged in @towerrounder branch with the option ignorePatterns.  Now you can ignore files in two ways, one is based on regex patterns via ignorePatterns and the other is to specify filenames in filesToIgnore.</li>
+</ul>
+
+## Contributors
+@Robert-W, @towerrounder
