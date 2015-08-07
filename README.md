@@ -44,7 +44,10 @@ cache_control: {
 Type: `String`
 Default Value: `none`
 
-A path to a html file that you want the plugin to work with.  If you do not provide a valid filepath then the plugin will terminate with a fatal error telling you the source file was not found. If the file provided does not end in .html or .htm then it will terminate with an error stating the source file needs to end with .html or .htm.  If there is a need to work with other file types contact me and I will look into it. 
+A path to a html file that you want the plugin to work with.  If you do not provide a valid filepath then the plugin will terminate with a fatal error telling you the source file was not found. If the file provided does not end in .html or .htm then it will terminate with an error stating the source file needs to end with .html or .htm.  If there is a need to work with other file types contact me and I will look into it.
+
+* As of version 0.2.5, you can now specify options as an array of strings or with glob patterns such as <code>'\*.html'</code> or <code>['index.html','test/*.html']</code>
+
 
 #### options.version
 Type: `String`
@@ -246,9 +249,8 @@ If you are unsure how this will work in your project.  I recommend for the first
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
-<ul>
-<li>2014/12/22 - v 0.2.4  Fixed issue with link tags being ignored that ended like <code> &lt;link ... ></code> instead of <code>&lt;link ... /></code>.  Both endings for link tags are now supported.  Also merged in @towerrounder branch with the option ignorePatterns.  Now you can ignore files in two ways, one is based on regex patterns via ignorePatterns and the other is to specify filenames in filesToIgnore.</li>
-</ul>
+* 2015/8/7 - v 0.2.5 Merged [pr4](https://github.com/Robert-W/grunt-cache-control/pull/4)
+* 2014/12/22 - v 0.2.4  Fixed issue with link tags being ignored that ended like <code> &lt;link ... ></code> instead of <code>&lt;link ... /></code>.  Both endings for link tags are now supported.  Also merged in @towerrounder branch with the option ignorePatterns.  Now you can ignore files in two ways, one is based on regex patterns via ignorePatterns and the other is to specify filenames in filesToIgnore.
 
 ## Contributors
-@Robert-W, @towerrounder
+@Robert-W, @towerrounder, @flozz, @mnd2982

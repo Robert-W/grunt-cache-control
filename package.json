@@ -1,7 +1,7 @@
 {
   "name": "grunt-cache-control",
   "description": "Control cache for your Javascript and CSS in one step with this easy to use plugin.",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "homepage": "http://robert-w.github.io/grunt-cache-control/",
   "author": {
     "name": "Robert Winterbottom",
