@@ -11,7 +11,7 @@ function runGruntTask (gruntFile, callback) {
     if(err){throw err;}
     callback();
   });
-};
+}
 
 exports.cache_control = {
     tearDown: function (done) {

@@ -57,7 +57,7 @@ module.exports = function(grunt) {
       }
     }
     return false;
-  }
+  };
   // html content, ignoreHttp currently always true, ignore src if begins with http or //
   var modifyLinks = function (html) {
     var count = 0;
@@ -165,82 +165,86 @@ module.exports = function(grunt) {
       ignorePatterns: []
     });
 
-    // Tell Grunt not to finish until my async methods are completed, calling done() to finish
-    done = this.async();
+    var sources = grunt.file.expand(this.data.source);
 
-    src = this.data.source;
+    for (var i = 0 ; i < sources.length ; i++) {
 
-    // Make sure the file exists
-    if (!grunt.file.isFile(src)) {
-      grunt.fatal('Source file "' + src + '" not found.');
+        src = sources[i];
+
+        grunt.log.subhead("Working on " + src);
+
+        // Make sure the file exists
+        if (!grunt.file.isFile(src)) {
+          grunt.fatal('Source file "' + src + '" not found.');
+        }
+
+        // What about .aspx/.php etc?
+        // Make sure the path is for a html or htm file
+        //if (src.slice(src.length - 5) !== ".html" && src.slice(src.length - 4) !== ".htm") {
+        //  grunt.fatal('Source file "' + src + '" needs to end with .html or .htm');
+        //}
+
+        // Get the page
+        page = getIndexFile(src);
+
+        if (options.links) {
+          numLinks = modifyLinks(page);
+          grunt.log.ok(numLinks + " link tags have been modified.");
+        }
+
+        if (options.scripts) {
+          numScripts = modifyScripts(page);
+          grunt.log.ok(numScripts + " script tags have been modified.");
+        }
+
+        if (options.dojoCacheBust) {
+          dojoConfigWin = modifyDojoConfig(page);
+          if (dojoConfigWin) {
+            grunt.log.ok("dojoConfig variable has been successfully modified.");
+          } else {
+            grunt.log.error("Unable to modify dojoConfig.");
+          }
+        }
+
+        if (options.replace) {
+          grunt.file.write(src, page);
+          grunt.log.ok("File successfully updated.");
+        } else {
+          if (options.outputDest) {
+            grunt.file.write(options.outputDest, page);
+            grunt.log.ok("File successfully written to " + options.outputDest + ".");
+          } else {
+            grunt.fatal("Unable to write file. Destination needs to be provided via outputDest in options or replace set to true.");
+          }
+        }
+
+        // Iterate over all specified file groups.
+    //    this.files.forEach(function(f) {
+    //      // Concat specified files.
+    //      var src = f.src.filter(function(filepath) {
+    //        // Warn on and remove invalid source files (if nonull was set).
+    //        if (!grunt.file.exists(filepath)) {
+    //          grunt.log.warn('Source file "' + filepath + '" not found.');
+    //          return false;
+    //        } else {
+    //          return true;
+    //        }
+    //      }).map(function(filepath) {
+    //        // Read file source.
+    //        return grunt.file.read(filepath);
+    //      }).join(grunt.util.normalizelf(options.separator));
+    //
+    //      // Handle options.
+    //      src += options.punctuation;
+    //
+    //      // Write the destination file.
+    //      grunt.file.write(f.dest, src);
+    //
+    //      // Print a success message.
+    //      grunt.log.writeln('File "' + f.dest + '" created.');
+    //    });
+
     }
-
-    // What about .aspx/.php etc?
-    // Make sure the path is for a html or htm file
-    //if (src.slice(src.length - 5) !== ".html" && src.slice(src.length - 4) !== ".htm") {
-    //  grunt.fatal('Source file "' + src + '" needs to end with .html or .htm');
-    //}
-
-    // Get the page
-    page = getIndexFile(src);
-
-    if (options.links) {
-      numLinks = modifyLinks(page);
-      grunt.log.ok(numLinks + " link tags have been modified.");
-    }
-
-    if (options.scripts) {
-      numScripts = modifyScripts(page);
-      grunt.log.ok(numScripts + " script tags have been modified.");
-    }
-
-    if (options.dojoCacheBust) {
-      dojoConfigWin = modifyDojoConfig(page);
-      if (dojoConfigWin) {
-        grunt.log.ok("dojoConfig variable has been successfully modified.");
-      } else {
-        grunt.log.error("Unable to modify dojoConfig.");
-      }
-    }
-
-    if (options.replace) {
-      grunt.file.write(src, page);
-      grunt.log.ok("File successfully updated.");
-    } else {
-      if (options.outputDest) {
-        grunt.file.write(options.outputDest, page);
-        grunt.log.ok("File successfully written to " + options.outputDest + ".");
-      } else {
-        grunt.fatal("Unable to write file. Destination needs to be provided via outputDest in options or replace set to true.");
-      }
-    }
-
-    // Iterate over all specified file groups.
-//    this.files.forEach(function(f) {
-//      // Concat specified files.
-//      var src = f.src.filter(function(filepath) {
-//        // Warn on and remove invalid source files (if nonull was set).
-//        if (!grunt.file.exists(filepath)) {
-//          grunt.log.warn('Source file "' + filepath + '" not found.');
-//          return false;
-//        } else {
-//          return true;
-//        }
-//      }).map(function(filepath) {
-//        // Read file source.
-//        return grunt.file.read(filepath);
-//      }).join(grunt.util.normalizelf(options.separator));
-//
-//      // Handle options.
-//      src += options.punctuation;
-//
-//      // Write the destination file.
-//      grunt.file.write(f.dest, src);
-//
-//      // Print a success message.
-//      grunt.log.writeln('File "' + f.dest + '" created.');
-//    });
-
 
 
   });
